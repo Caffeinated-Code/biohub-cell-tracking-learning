@@ -1,6 +1,6 @@
-# Visual Primer: From Microscopy Movie to Cell Lineage
+# My Visual Primer: From Microscopy Movie to Cell Lineage
 
-This primer explains the public, reusable ideas behind the project. It intentionally does not contain private experiment priorities or leaderboard strategy.
+I am using this primer to build my understanding of the problem one layer at a time. It contains the reusable ideas I learn along the way. My competition experiments and leaderboard notes stay private.
 
 ## 1. The data: a 3D world changing through time
 
@@ -43,7 +43,7 @@ This is why ordinary supervised training can fail: telling a model that every un
 DoG = lightly blurred image − strongly blurred image
 ```
 
-We retain local peaks using **[non-maximum suppression](https://paperswithcode.com/method/non-maximum-suppression)**: within a small 3D neighborhood, only the strongest response survives.
+I retain local peaks using **[non-maximum suppression](https://paperswithcode.com/method/non-maximum-suppression)**: within a small 3D neighborhood, only the strongest response survives.
 
 ## 3. Association: nodes become tracks
 
@@ -105,7 +105,7 @@ Track at least:
 - predicted/estimated node-count ratio;
 - per-movie results, runtime, and memory.
 
-## 7. Our learning loop
+## 7. My learning loop
 
 ```mermaid
 flowchart LR
@@ -118,4 +118,3 @@ flowchart LR
 ```
 
 This turns a leaderboard exercise into transferable knowledge: image processing, deep learning, graph optimization, experimental design, and scientific reasoning.
-

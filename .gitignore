@@ -8,7 +8,7 @@ checkpoints/
 models/
 
 # Private research: intentionally never published
-private/
+privateResearch/
 
 # Python / notebooks
 .venv/
@@ -16,4 +16,3 @@ __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
 .DS_Store
-

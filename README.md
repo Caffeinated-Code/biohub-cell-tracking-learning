@@ -1,70 +1,69 @@
-# Biohub Cell Tracking — Learn, Build, Compete
+# Learning Cell Tracking with the Biohub Kaggle Competition
 
-An educational, reproducible project for the Kaggle **[Biohub — Cell Tracking During Development](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development)** competition.
+I am using the **[Biohub — Cell Tracking During Development](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development)** competition to learn 3D computer vision, tracking, and careful model validation.
 
-The public repository explains the problem and contains runnable learning baselines. Competition-specific experiment hypotheses, leaderboard strategy, unpublished results, data, and model weights stay private and are excluded by `.gitignore`.
+My goal is to understand each part well enough to explain it, build a simple version, see where it fails, and then improve it. This repository contains my public learning notes and reproducible notebooks. I keep competition data, model weights, private experiments, and leaderboard strategy out of the repository.
 
-## The whole problem in one picture
+## The problem in one picture
 
 ```mermaid
 flowchart LR
     A["4D microscopy movie<br/>time × depth × height × width"] --> B["Detect<br/>Where are the cells?"]
     B --> C["Nodes<br/>one cell candidate at one time"]
     C --> D["Associate<br/>Which node is the same cell next frame?"]
-    D --> E["Edges<br/>parent → continuation"]
-    D --> F["Division<br/>did one parent become two daughters?"]
+    D --> E["Edges<br/>cell → same cell"]
+    D --> F["Division<br/>did one cell become two daughters?"]
     E --> G["Lineage graph"]
     F --> G
     G --> H["submission.csv<br/>nodes + edges"]
 ```
 
-The central difficulty is **sparse annotation**. A labeled cell is a confirmed positive, but an unlabeled bright object is not necessarily background. It may be a real cell the annotator did not label. A useful prediction therefore combines three kinds of evidence:
+The labels are sparse. A labeled cell is a confirmed cell, but an unlabeled bright object is not automatically background. It may be a real cell that was not labeled.
 
 ```text
 looks like a cell + moves like a cell + persists like a cell
                            ↓
-                trustworthy track candidate
+                stronger evidence of a real cell
 ```
 
-## Day 1 baseline
+## My first notebook
 
-[`notebooks/01_eda_and_classical_baseline.ipynb`](notebooks/01_eda_and_classical_baseline.ipynb) is a self-contained Kaggle notebook that:
+[`kaggleNotebooks/dayOneEdaAndBaseline.ipynb`](kaggleNotebooks/dayOneEdaAndBaseline.ipynb) is my first complete pass through the problem. It:
 
-1. discovers and audits the competition files;
-2. visualizes anisotropic 3D microscopy frames;
-3. detects candidate cell centers with a 3D Difference of Gaussians;
-4. links adjacent frames with physically scaled, gated one-to-one matching;
-5. validates graph invariants; and
-6. writes `/kaggle/working/submission.csv`.
+1. finds and checks the competition files;
+2. visualizes the 3D microscopy data;
+3. detects possible cell centers with a 3D Difference of Gaussians;
+4. links nearby detections across adjacent frames;
+5. checks the resulting graph; and
+6. creates `/kaggle/working/submission.csv`.
 
-This is deliberately an interpretable first submission, not the intended final model. Its purpose is to make every step observable and establish a valid end-to-end reference.
+This is a simple and understandable starting point. It gives me a complete working pipeline before I add learned detectors, better tracking, and division prediction.
 
-## Learning map
+## How I am learning the problem
 
-Read the **[visual primer](docs/PRIMER.md)** alongside the notebook. Terms in the notebook link back to sections of the primer.
+The **[visual primer](learningNotes/visualPrimer.md)** explains the important concepts behind the notebook.
 
-| Stage | Question | Day 1 method | Later direction |
+| Step | Question | First method | What I want to learn next |
 |---|---|---|---|
-| Detection | Where are the cells? | 3D Difference of Gaussians | Temporal 3D U-Net ensemble |
-| Association | Which cell is which? | Gated greedy matching | Learned link scores + global optimization |
-| Division | Did one become two? | No forks yet | Calibrated division classifier |
-| Validation | Did it improve? | Structural checks | Movie-level local metric |
-| Submission | Can Kaggle score it? | Nodes + edges CSV | Offline, reproducible inference notebook |
+| Detection | Where are the cells? | 3D Difference of Gaussians | Temporal 3D U-Net |
+| Association | Which cell is which? | Distance-gated matching | Motion and learned link scores |
+| Division | Did one become two? | No divisions yet | Conservative division classification |
+| Validation | Did the change help? | Graph checks | Movie-level official metric |
+| Submission | Can Kaggle score it? | Nodes and edges CSV | Reliable offline inference |
 
-## Reproducibility rules
+## Ground rules
 
-- Never commit competition data, private research, model weights, secrets, or generated submissions.
-- Use movie/embryo-level validation; never randomly mix frames from the same movie across train and validation.
-- Treat unlabeled regions as unknown unless a method provides defensible negative evidence.
-- Record one controlled change per experiment.
-- Optimize the official graph metric, not an unrelated proxy alone.
-- Keep Kaggle inference offline and within the competition runtime limits.
+- I do not commit competition data, model weights, private research, secrets, or generated submissions.
+- I keep complete movies together when creating validation splits.
+- I treat unlabeled regions as unknown unless I have a defensible reason to call them background.
+- I change one important thing at a time and record the result.
+- I use the official graph metric to decide whether an experiment helped.
+- I keep Kaggle inference offline and within the competition runtime limits.
 
-## Sources and attribution
+## References
 
-- [Official competition](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development)
-- [Official baseline and evaluation implementation](https://github.com/royerlab/kaggle-cell-tracking-competition)
+- [Competition page](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development)
+- [Official baseline and evaluation code](https://github.com/royerlab/kaggle-cell-tracking-competition)
 - [Official metric explanation](https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/metrics.md)
 
-This repository is an independent educational project. Always consult the current Kaggle rules before using code, data, or pretrained weights.
-
+I will check the current competition rules before using outside code, data, or pretrained weights.
