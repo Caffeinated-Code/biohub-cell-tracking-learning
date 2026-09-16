@@ -1,0 +1,19 @@
+# Competition data and generated artifacts
+data/
+*.zarr/
+*.geff/
+submissions/*.csv
+outputs/
+checkpoints/
+models/
+
+# Private research: intentionally never published
+private/
+
+# Python / notebooks
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+
