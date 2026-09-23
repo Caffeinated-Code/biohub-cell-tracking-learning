@@ -39,6 +39,18 @@ looks like a cell + moves like a cell + persists like a cell
 
 This is a simple and understandable starting point. It gives me a complete working pipeline before I add learned detectors, better tracking, and division prediction.
 
+## My second notebook
+
+[`kaggleNotebooks/dayTwoDetectionAndTracking.ipynb`](kaggleNotebooks/dayTwoDetectionAndTracking.ipynb) turns the first result into a measured experiment. It:
+
+1. compares five 3D center-response transformations on annotated training frames;
+2. handles sparse annotations without treating every unlabeled location as background;
+3. compares greedy, Hungarian, and motion-aware Hungarian linking on complete movies;
+4. selects a configuration using local edge validation; and
+5. applies the selected configuration to the test movies.
+
+The notebook saves the detector screen, full-movie validation, selected configuration, runtime summary, and final submission as separate output files.
+
 ## How I am learning the problem
 
 The **[visual primer](learningNotes/visualPrimer.md)** explains the important concepts behind the notebook.
